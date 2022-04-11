@@ -1,22 +1,27 @@
-const fs = require("fs");
-// const input = fs.readFileSync(`/dev/stdin`).toString().toUpperCase().split('');
-const input = fs.readFileSync(`${process.cwd()}/문자열 단계/단어 공부 1157/input.txt`).toString().toUpperCase().split('');
+const fs = require('fs');
+const filePath = process.platform === 'linux' ? '/dev/stdin' : `${__dirname}/input.txt`;
+const input = fs.readFileSync(filePath).toString().trim().toUpperCase();
 
 const obj = {};
-for (const char of input) {
-  obj[char] = obj[char] ? obj[char] + 1 : 1;
-}
 
-let highestChar = "";
-let count = 0;
-for (const [key, value] of Object.entries(obj)) {
-  if (value > count) {
-    count = value;
-    highestChar = key;
-  } else if (value === count) {
-    console.log("?");
-    return;
+for (const char of input) {
+  if (!obj[char]) {
+    obj[char] = 1;
+  } else {
+    obj[char] += 1;
   }
 }
 
-console.log(highestChar);
+let mostFrequentChar = '';
+let count = 0;
+
+for (const [key, value] of Object.entries(obj)) {
+  if (value > count) {
+    count = value;
+    mostFrequentChar = key;
+  } else if (value === count) {
+    mostFrequentChar = '?';
+  }
+}
+
+console.log(mostFrequentChar);
